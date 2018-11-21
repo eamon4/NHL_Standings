@@ -1,0 +1,104 @@
+---
+title: "NHL_Standing_Analysis"
+author: "Eamon Devlin"
+date: "11/10/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Packages
+
+```{r, echo=FALSE, include=FALSE}
+library(tidyverse)
+library(pwr)
+library(knitr)
+library(kableExtra)
+library(plotly)
+library(extrafont)
+library(ggrepel)
+library(dplyr)
+library(tinytex)
+library(RColorBrewer)
+library(effsize)
+```
+
+Read in data
+
+```{r}
+
+team_stats_2018_11_10.csv <- read_csv("team_stats_2018-11-10.csv")
+
+```
+
+### 2017-2018 Analysis (Ranks)
+
+First mode of analysis is looking at the 2017-2018 season
+
+
+
+
+```{r}
+# First create a 2017 - 2018 subset
+
+season_2017_2018 <- select(team_stats_2018_11_10, Team:PDO) %>% 
+   mutate(
+    season = case_when(
+    Season == 2009-2010 ~ "2009_2010",
+    Season == 2010-2011 ~ "2010_2011",
+    Season == 2011-2012 ~ "2011-2012",
+    Season == 2012-2013 ~ "2012_2013",
+    Season == 2013-2014 ~ "2013_2014",
+    Season == 2014-2015 ~ "2014_2015",
+    Season == 2015-2016 ~ "2015_2016",
+    Season == 2016-2017 ~ "2016_2017",
+    Season == 2017-2018 ~ "2017_2018")) %>% 
+  filter(Season == "2017-2018") %>% 
+  mutate(
+    conference = case_when(
+    Team == "ANA" ~ "west",
+    Team == "ARI" ~ "west",
+    Team == "BOS" ~ "east",
+    Team == "BUF" ~ "east", 
+    Team == "CAR" ~ "east",
+    Team == "CBJ" ~ "east",
+    Team == "CGY" ~ "west",
+    Team == "CHI" ~ "west",
+    Team == "COL" ~ "west",
+    Team == "DAL" ~ "west",
+    Team == "DET" ~ "east",
+    Team == "EDM" ~ "west",
+    Team == "FLA" ~ "east",
+    Team == "L.A" ~ "west",
+    Team == "MIN" ~ "west",
+    Team == "MTL" ~ "east",
+    Team == "N.J" ~ "east",
+    Team == "NSH" ~ "east",
+    Team == "NYI" ~ "east",
+    Team == "NYR" ~ "east",
+    Team == "OTT" ~ "east",
+    Team == "PHI" ~ "east",
+    Team == "PIT" ~ "east",
+    Team == "S.J" ~ "west",
+    Team == "STL" ~ "west",
+    Team == "T.B" ~ "east",
+    Team == "TOR" ~ "east",
+    Team == "VAN" ~ "west",
+    Team == "VGK" ~ "west",
+    Team == "WPG" ~ "west",
+    Team == "WSH" ~ "east"
+    )) 
+
+conf_2017_2018 <- group_by(season_2017_2018, conference)
+
+# conf_hist <- ggplot(conf_2017_2018, aes())
+
+```
+
+
+
+
+
+
