@@ -29,7 +29,7 @@ Read in data
 
 ```{r}
 
-team_stats_2018_11_10.csv <- read_csv("team_stats_2018-11-10.csv")
+team_stats_2018_11_10 <- read_csv("team_stats_2018-11-10.csv")
 
 ```
 
@@ -44,17 +44,6 @@ First mode of analysis is looking at the 2017-2018 season
 # First create a 2017 - 2018 subset
 
 season_2017_2018 <- select(team_stats_2018_11_10, Team:PDO) %>% 
-   mutate(
-    season = case_when(
-    Season == 2009-2010 ~ "2009_2010",
-    Season == 2010-2011 ~ "2010_2011",
-    Season == 2011-2012 ~ "2011-2012",
-    Season == 2012-2013 ~ "2012_2013",
-    Season == 2013-2014 ~ "2013_2014",
-    Season == 2014-2015 ~ "2014_2015",
-    Season == 2015-2016 ~ "2015_2016",
-    Season == 2016-2017 ~ "2016_2017",
-    Season == 2017-2018 ~ "2017_2018")) %>% 
   filter(Season == "2017-2018") %>% 
   mutate(
     conference = case_when(
@@ -97,7 +86,36 @@ conf_2017_2018 <- group_by(season_2017_2018, conference)
 
 ```
 
-test
+Basic histogram for GF and GA per 60 minutes
+
+```{r}
+gf_hist_2017_2018 <- ggplot(season_2017_2018, aes(`GF/60`)) +
+  geom_histogram(bins = 7, aes(fill = conference)) +
+                 #  "darkblue", colour = "dodgerblue") +
+  labs(x = "Goals For Per 60 Minutes", y = "Frequency") +
+  theme_classic() +
+  scale_y_continuous(expand = c(0,0))  # +
+  # facet_wrap(~conference)  #, scales = "free")
+
+gf_hist_2017_2018
+
+
+#  Perform Rank Test
+east_2017_2018 <- season_2017_2018 %>% 
+  filter(conference == "east")
+west_2017_2018 <- season_2017_2018 %>% 
+  filter(conference == "west")
+
+rank_gf_2017_2018 <- wilcox.test(west_2017_2018$`GF/60`,east_2017_2018$`GF/60`, paired = FALSE)
+
+rank_gf_2017_2018
+
+ttest_gf_2017_2018 <- t.test(west_2017_2018$`GF/60`,east_2017_2018$`GF/60`)
+
+
+```
+
+
 
 
 
